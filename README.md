@@ -9,6 +9,17 @@ Shell tools for Linux automation (CentOS and Raspbian primary)
 
 ## Video transcode @ Win 10 ffmpeg
 CUDA supporting build is from https://www.gyan.dev/ffmpeg/builds/
+
+For the default 16:9 aspect ratio, encode at these resolutions:
+```
+    2160p: 3840x2160
+    1440p: 2560x1440
+    1080p: 1920x1080
+    720p: 1280x720
+    480p: 854x480
+    360p: 640x360
+    240p: 426x240
+```
 ### 1080p Normal HQ with CUDA from BD
 `ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <in> -map 0 -scodec copy -acodec copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 5M -map_metadata 0 -movflags use_metadata_tags -f <out>`
 ### Resize `$2` to `$1` Keep audio (DTS for example), lower video bitrate with CUDA, save as `$3`
