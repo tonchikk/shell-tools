@@ -6,7 +6,7 @@ Shell tools for Linux automation (CentOS and Raspbian primary)
 
 ### Find Raspbian changed files
 `dpkg --verify` -> `dpkg --verify | awk '{print $3;}' | xargs dpkg -S` - for configs
-## Firt 2 rows are some numbers (bitrate and file size), print if value more than something
+### First 2 rows are some numbers (bitrate and file size), print if value more than something
 `awk '($1 > 5000) {for (i=3; i<=NF; i++) { printf $i " "} ; print LF;}' dirlist.sorted.txt`
 ## Video transcode @ Win 10 ffmpeg
 CUDA supporting build is from https://www.gyan.dev/ffmpeg/builds/
