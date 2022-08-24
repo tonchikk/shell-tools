@@ -8,7 +8,20 @@ Shell tools for Linux automation (CentOS and Raspbian primary)
 `dpkg --verify` -> `dpkg --verify | awk '{print $3;}' | xargs dpkg -S` - for configs
 ### First 2 rows are some numbers (bitrate and file size), print if value more than something
 `awk '($1 > 5000) {for (i=3; i<=NF; i++) { printf $i " "} ; print LF;}' dirlist.sorted.txt`
-
+```
+# List bitrate, size and file name
+$ cat /usr/local/bin/ffls
+#!/bin/bash
+( ffprobe.exe -hide_banner "$1" || echo 0 ) 2>&1  | grep -oE 'bitrate:.*' | awk '{printf $2;}'
+stat --printf " %s %n" "$1"
+echo
+```
+```
+# List all files in directory and in sub directories with above script
+$ cat /usr/local/bin/fflsa
+#!/bin/bash
+find "$1" -type f -print0 | xargs.exe -0 -n 1 ffls
+```
 ## Video transcode @ Win 10 ffmpeg
 CUDA supporting build is from https://www.gyan.dev/ffmpeg/builds/
 ```
