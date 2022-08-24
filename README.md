@@ -43,11 +43,12 @@ Named
 `ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <src> -map 0:v -map 0:a -map 0:s -map -0:5 -c:s copy -c:a copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 4M  -bufsize 70M -map_metadata 0 -movflags use_metadata_tags -f matroska <dst>`
 #### Shortcuts
 `-c:2 ac3 -b:2 448k` - encode stream 2 of output into AC3 (from DTS)
+`-c:a dca` - encode to DTS (from something really HD in 4K)
 ### Resize `$2` to `$1` Keep audio (DTS for example), lower video bitrate with CUDA, save as `$3`
 `ffmpeg -y -hwaccel cuvid -hwaccel_output_format cuda -i "$2" -map 0 -scodec copy -acodec copy -vf scale_cuda=-2:$1 -c:v h264_nvenc -preset slow -profile:v high -level 4.1 -map_metadata 0 -movflags use_metadata_tags -f matroska "$3"`
 ### Same with Intel QSV with Intel video on Laptop - looks like Video Quality better than NV CUDA
 `ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv -i "$2" -map 0 -map -0:7 -scodec copy -acodec copy -vf scale_qsv=-1:"$1" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska "$3"`
 #### Lover 4K HDR HEVC to H264 + DTS (no auto rescaling)
-`ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v hevc_qsv -i <in> -map 0 -map -0:9 -map -0:3 -map -0:2 -scodec copy -c:a dca -vf "scale_qsv=format=nv12:w=1382:h=576" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska <out>
+`ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v hevc_qsv -i <in> -map 0 -map -0:9 -map -0:3 -map -0:2 -scodec copy -c:a dca -vf "scale_qsv=format=nv12:w=1382:h=576" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska <out>`
 
 `scale_qsv=format=nv12` - here helping to conver HDR pixel format to something readable by H264 and Dune HD
