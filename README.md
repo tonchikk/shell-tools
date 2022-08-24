@@ -8,10 +8,9 @@ Shell tools for Linux automation (CentOS and Raspbian primary)
 `dpkg --verify` -> `dpkg --verify | awk '{print $3;}' | xargs dpkg -S` - for configs
 ### First 2 rows are some numbers (bitrate and file size), print if value more than something
 `awk '($1 > 5000) {for (i=3; i<=NF; i++) { printf $i " "} ; print LF;}' dirlist.sorted.txt`
+
 ## Video transcode @ Win 10 ffmpeg
 CUDA supporting build is from https://www.gyan.dev/ffmpeg/builds/
-
-
 ```
 16:9 aspect ratio
     2160p: 3840x2160
@@ -37,17 +36,21 @@ Named
     WUXGA 1920 x 1200
     WQXGA 2560 x 1600
 ```
-### 1080p Normal HQ with CUDA from BD
-`ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <in> -map 0 -scodec copy -acodec copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 5M -map_metadata 0 -movflags use_metadata_tags -f <out>`
-#### Copy all, drop stream 5
-`ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <src> -map 0:v -map 0:a -map 0:s -map -0:5 -c:s copy -c:a copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 4M  -bufsize 70M -map_metadata 0 -movflags use_metadata_tags -f matroska <dst>`
 #### Shortcuts
 * `-c:2 ac3 -b:2 448k` - encode stream 2 of output into AC3 (from DTS)
 * `-c:a dca` - encode to DTS (from something really HD in 4K)
-### Resize `$2` to `$1` Keep audio (DTS for example), lower video bitrate with CUDA, save as `$3`
+
+### 1080p Normal HQ with NVidia CUDA from BD
+`ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <in> -map 0 -scodec copy -acodec copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 5M -map_metadata 0 -movflags use_metadata_tags -f <out>`
+#### Copy all, drop stream 5
+`ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <src> -map 0:v -map 0:a -map 0:s -map -0:5 -c:s copy -c:a copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 4M  -bufsize 70M -map_metadata 0 -movflags use_metadata_tags -f matroska <dst>`
+#### Resize `$2` to `$1` Keep audio (DTS for example), lower video bitrate with CUDA, save as `$3`
 `ffmpeg -y -hwaccel cuvid -hwaccel_output_format cuda -i "$2" -map 0 -scodec copy -acodec copy -vf scale_cuda=-2:$1 -c:v h264_nvenc -preset slow -profile:v high -level 4.1 -map_metadata 0 -movflags use_metadata_tags -f matroska "$3"`
+
 ### Same with Intel QSV with Intel video on Laptop - looks like Video Quality better than NV CUDA
 `ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv -i "$2" -map 0 -map -0:7 -scodec copy -acodec copy -vf scale_qsv=-1:"$1" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska "$3"`
+
+It has some probles with auto scaling. Sometimes giving green bar of 10 pixels on bottom or it could be some trash bar. Calculate dimensions manually for most cases. For h264 it is important to keep sizes in pixels even (divisible by 2) on both sides.
 #### Lover 4K HDR HEVC to H264 + DTS (no auto rescaling)
 `ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v hevc_qsv -i <in> -map 0 -map -0:9 -map -0:3 -map -0:2 -scodec copy -c:a dca -vf "scale_qsv=format=nv12:w=1382:h=576" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska <out>`
 
