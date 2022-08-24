@@ -53,7 +53,7 @@ Named
 `ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v h264_qsv -i "$2" -map 0 -map -0:7 -scodec copy -acodec copy -vf scale_qsv=-1:"$1" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska "$3"`
 
 It has some probles with auto scaling. Sometimes giving green bar of 10 pixels on bottom or it could be some trash bar. Calculate dimensions manually for most cases. For h264 it is important to keep sizes in pixels even (divisible by 2) on both sides.
-#### Lover 4K HDR HEVC to H264 + DTS (no auto rescaling)
+#### Lover 4K HDR HEVC to H264 + DTS with HW rescale and pixel format change
 `ffmpeg -y -hwaccel qsv -hwaccel_output_format qsv -c:v hevc_qsv -i <in> -map 0 -map -0:9 -map -0:3 -map -0:2 -scodec copy -c:a dca -vf "scale_qsv=format=nv12:w=1382:h=576" -c:v h264_qsv -preset slow -profile:v high -b:v 2M -map_metadata 0 -movflags use_metadata_tags -f matroska <out>`
 
 `scale_qsv=format=nv12` - here helping to conver HDR pixel format to something readable by H264 and Dune HD
