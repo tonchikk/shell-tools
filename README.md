@@ -42,6 +42,8 @@ Named
 
 ### 1080p Normal HQ with NVidia CUDA from BD
 `ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <in> -map 0 -scodec copy -acodec copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 5M -map_metadata 0 -movflags use_metadata_tags -f <out>`
+
+`-vf "scale_cuda=-2:480:force_original_aspect_ratio=2:force_divisible_by=2"` - scale video by NVidia to 480 by height, keep proportions as much it can (DAR, SAT starting dancing here)
 #### Copy all, drop stream 5
 `ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <src> -map 0:v -map 0:a -map 0:s -map -0:5 -c:s copy -c:a copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 4M  -bufsize 70M -map_metadata 0 -movflags use_metadata_tags -f matroska <dst>`
 #### Resize `$2` to `$1` Keep audio (DTS for example), lower video bitrate with CUDA, save as `$3`
