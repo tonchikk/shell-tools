@@ -1,0 +1,4 @@
+#!/bin/bash
+ls -lh "$1"
+ffprobe.exe -hide_banner "$1" 2>&1 | grep -E 'Duration|Stream|title'
+
