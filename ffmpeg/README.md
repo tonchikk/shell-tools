@@ -30,6 +30,10 @@ Named
 ## Shortcuts for media processing
 ### First 2 rows are some numbers (bitrate and file size), print if value more than something
 `awk '($1 > 5000) {for (i=3; i<=NF; i++) { printf $i " "} ; print LF;}' dirlist.sorted.txt`
+
+```
+awk '($1 > 3000) {printf "bash fflower.sh \""; for (i=3; i<=NF; i++) { printf $i; if (i!=NF) {printf " ";}} ; print "\""LF; s+=$2; } END { print "echo",s}' dirlist.sorted.txt > fflower.1.sh
+```
 ### List bitrate, size and file name
 ```
 $ cat /usr/local/bin/ffls
