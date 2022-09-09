@@ -24,3 +24,17 @@ ip route 69.171.224.0/19 %GW%
 ip route 69.63.176.0/20 %GW%
 ```
 WhatsApp and Instagram is also on these networks :-) Have fun ;-)
+```
+# named.conf
+        zone "facebook.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "fbcdn.net" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "fb.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "fbpigeon.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "fbsbx.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "internalfb.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "messenger.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "fb.me" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "instagram.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+        zone "cdninstagram.com" { type forward; forwarders { %DNS_IP%; }; forward only;};
+```
+
