@@ -23,4 +23,4 @@ ip route 66.220.144.0/20 %GW%
 ip route 69.171.224.0/19 %GW%
 ip route 69.63.176.0/20 %GW%
 ```
-WhatsApp is also on these networks :-) Have fun ;-)
+WhatsApp and Instagram is also on these networks :-) Have fun ;-)
