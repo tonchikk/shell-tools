@@ -53,6 +53,9 @@ find "$1" -type f -print0 | xargs.exe -0 -n 1 ffls
 ### shortcuts
 * `-c:2 ac3 -b:2 448k` - encode stream 2 of output into AC3 (from DTS)
 * `-c:a dca` - encode to DTS (from something really HD in 4K)
+### File level
+#### m4v to mkv with subs
+`ffmpeg -i ${name}.m4v -map 0:s -map 0:a -map 0:v -c copy -c:s srt -map_metadata 0 -movflags use_metadata_tags -f matroska ${name}.mkv`
 ### NVidia CUDA
 #### 1080p Normal HQ with NVidia CUDA from BD
 `ffmpeg -y -threads 1 -hwaccel cuvid -c:v h264_cuvid -surfaces 16 -hwaccel_output_format cuda -i <in> -map 0 -scodec copy -acodec copy -c:v h264_nvenc -surfaces 64 -preset p7 -profile:v high -level 4.1 -b:v 5M -map_metadata 0 -movflags use_metadata_tags -f <out>`
