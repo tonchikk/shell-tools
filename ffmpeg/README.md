@@ -78,3 +78,6 @@ It has some probles with auto scaling. Sometimes giving green bar of 10 pixels o
 #### iPhone video to Firefox compatible something
 `ffmpeg.exe -y -init_hw_device qsv=hw,child_device_type=dxva2 -hwaccel qsv -hwaccel_output_format qsv -c:v hevc_qsv -i IMG_0094.MOV -vf "scale_qsv=format=nv12" -c:v h264_qsv -preset slow -profile:v high -c:a copy -f mp4 -map_metadata 0 -movflags use_metadata_tags IMG_0094.mp4`
 Note: please use lastest build as of June 4, 2025
+
+# Links
+https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
